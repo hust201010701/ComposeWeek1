@@ -1,3 +1,18 @@
+/*
+ * Copyright 2021 The Android Open Source Project
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     https://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.example.androiddevchallenge.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -5,10 +20,10 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -31,8 +46,8 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.navigation.NavController
 import androidx.navigation.compose.navigate
-import com.example.androiddevchallenge.model.Pet
 import com.example.androiddevchallenge.R
+import com.example.androiddevchallenge.model.Pet
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -42,21 +57,26 @@ fun Home(navController: NavController) {
         cells = GridCells.Fixed(2),
     ) {
         itemsIndexed(items = petList) { index, pet ->
-            PetItem(pet, index, onItemClicked = { _index ->
-                navController.navigate("detail/$_index")
-            })
+            PetItem(
+                pet, index,
+                onItemClicked = { _index ->
+                    navController.navigate("detail/$_index")
+                }
+            )
         }
     }
 }
 
 @Composable
 fun PetItem(pet: Pet, index: Int, onItemClicked: (index: Int) -> Unit) {
-    Box (modifier = Modifier
-        .fillMaxWidth()
-        .padding(2.dp)
-        .clickable(onClick = { onItemClicked(index) })
-        .aspectRatio(0.75f)
-        .clip(RoundedCornerShape(10.dp))) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(2.dp)
+            .clickable(onClick = { onItemClicked(index) })
+            .aspectRatio(0.75f)
+            .clip(RoundedCornerShape(10.dp))
+    ) {
         Image(
             modifier = Modifier
                 .fillMaxWidth()
@@ -72,22 +92,42 @@ fun PetItem(pet: Pet, index: Int, onItemClicked: (index: Int) -> Unit) {
                 .padding(10.dp),
         ) {
             val (name, type, genderIcon, age) = createRefs()
-            Text(text = pet.name, modifier = Modifier
-                .constrainAs(name) {
-                    start.linkTo(parent.start)
-                    bottom.linkTo(type.top)
-                }
-                .padding(bottom = 8.dp), style = TextStyle(fontSize = 27.sp, color = Color.White, fontWeight = FontWeight.Bold, fontFamily = FontFamily.SansSerif))
-            Text(text = pet.type, modifier = Modifier
-                .constrainAs(type) {
-                    start.linkTo(parent.start)
-                    bottom.linkTo(parent.bottom)
-                }
-                .alpha(0.8f)
-                .padding(end = 4.dp), style = TextStyle(fontSize = 12.sp, color = Color.White))
-            Icon(painter = painterResource(id = if(pet.gender) {R.drawable.ic_male} else {R.drawable.ic_female}),
+            Text(
+                text = pet.name,
+                modifier = Modifier
+                    .constrainAs(name) {
+                        start.linkTo(parent.start)
+                        bottom.linkTo(type.top)
+                    }
+                    .padding(bottom = 8.dp),
+                style = TextStyle(
+                    fontSize = 27.sp,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    fontFamily = FontFamily.SansSerif
+                )
+            )
+            Text(
+                text = pet.type,
+                modifier = Modifier
+                    .constrainAs(type) {
+                        start.linkTo(parent.start)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .alpha(0.8f)
+                    .padding(end = 4.dp),
+                style = TextStyle(fontSize = 12.sp, color = Color.White)
+            )
+            Icon(
+                painter = painterResource(
+                    id = if (pet.gender) {
+                        R.drawable.ic_male
+                    } else {
+                        R.drawable.ic_female
+                    }
+                ),
                 contentDescription = "gender",
-                tint = if(pet.gender) Color.Blue else Color.Red,
+                tint = if (pet.gender) Color.Blue else Color.Red,
                 modifier = Modifier
                     .constrainAs(genderIcon) {
                         start.linkTo(type.end)
@@ -95,14 +135,19 @@ fun PetItem(pet: Pet, index: Int, onItemClicked: (index: Int) -> Unit) {
                     }
                     .size(21.dp)
                     .alpha(0.8f)
-                    .padding(end = 4.dp))
-            Text(text = "${pet.age} MTHs", modifier = Modifier
-                .constrainAs(age) {
-                    start.linkTo(genderIcon.end)
-                    bottom.linkTo(parent.bottom)
-                }
-                .alpha(0.8f)
-                .padding(end = 4.dp), style = TextStyle(fontSize = 12.sp, color = Color.White))
+                    .padding(end = 4.dp)
+            )
+            Text(
+                text = "${pet.age} MTHs",
+                modifier = Modifier
+                    .constrainAs(age) {
+                        start.linkTo(genderIcon.end)
+                        bottom.linkTo(parent.bottom)
+                    }
+                    .alpha(0.8f)
+                    .padding(end = 4.dp),
+                style = TextStyle(fontSize = 12.sp, color = Color.White)
+            )
         }
     }
 }
